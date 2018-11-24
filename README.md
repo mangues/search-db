@@ -1,5 +1,7 @@
 ## 使用方法
 
+#### 以下图片随机网上截取
+
 ![image](http://blogs.cdn.mangues.top/WX20181124-220832@2x.png)
 
 
