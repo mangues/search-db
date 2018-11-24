@@ -1,5 +1,8 @@
 ## 使用方法
 
+![image](http://blogs.cdn.mangues.top/WX20181124-220832@2x.png)
+
+
 ### 一、简单使用
 
 user表
@@ -12,22 +15,22 @@ id	name	password
 
 1. 正常查询所有user数据
 ```
-    @GetMapping("/list")
-    @ApiOperation(value = "获取用户列表")
-    public Object orderList() {
-        return iUserService.list();
-    }
+@GetMapping("/list")
+@ApiOperation(value = "获取用户列表")
+public Object orderList() {
+    return iUserService.list();
+}
 ```
 
 2. 加上字段name检索，只需要添加注解 @SearchDb，搜索类UserSearch，UserSearch必须继承接口SearchBean
 
 ```
-   @GetMapping("/list")
-    @ApiOperation(value = "获取用户列表")
-    @SearchDb
-    public Object orderList(UserSearch userSearch) {
-        return iUserService.list();
-    }
+@GetMapping("/list")
+@ApiOperation(value = "获取用户列表")
+@SearchDb
+public Object orderList(UserSearch userSearch) {
+    return iUserService.list();
+}
 ```
 
 > @SearchParam参数：
@@ -39,9 +42,8 @@ id	name	password
 ```
 @Data
 public class UserSearch implements SearchBean {
-    @SearchParam(column = "name",symbol = SearchParamEnum.like)
-    private String username;
-
+   @SearchParam(column = "name",symbol = SearchParamEnum.like)
+   private String username;
 }
 
 ```
@@ -53,7 +55,7 @@ public class UserSearch implements SearchBean {
 order_info 表
 
 ```
-id	user_id	order_num	create_at	                    state
+id	user_id	order_num	create_at	    state
 1	1	ED123456	2018-12-19 22:23:23	-1
 2	2	ED234566	2018-12-20 22:23:23	2
 3	1	DF345677	2018-12-21 22:23:23	-2
@@ -65,18 +67,18 @@ id	user_id	order_num	create_at	                    state
 dateFormat 后接数据库 FORMAT_DATE 函数的格式化 字符串
 
 ```
-    @SearchParam(column = "create_at",symbol = SearchParamEnum.between_and,dateFormat = "%Y-%m-%d")
-    @ApiModelProperty(value = "订单时间范围 2018-12-11,2018-12-24")
-    private String createDate;
+@SearchParam(column = "create_at",symbol = SearchParamEnum.between_and,dateFormat = "%Y-%m-%d")
+@ApiModelProperty(value = "订单时间范围 2018-12-11,2018-12-24")
+private String createDate;
 ```
 
 #### 2.between and 用法
 
 必须字符串参数，"," 分隔前后两个检索参数
 ```
-    @SearchParam(column = "create_at",symbol = SearchParamEnum.between_and,dateFormat = "%Y-%m-%d")
-    @ApiModelProperty(value = "订单时间范围 2018-12-11,2018-12-24")
-    private String createDate;
+@SearchParam(column = "create_at",symbol = SearchParamEnum.between_and,dateFormat = "%Y-%m-%d")
+@ApiModelProperty(value = "订单时间范围 2018-12-11,2018-12-24")
+private String createDate;
 ```
 
 #### 3.枚举变量检索支持
