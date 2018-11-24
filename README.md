@@ -2,7 +2,7 @@
 
 #### 以下图片随机网上截取
 
-![image](https://github.com/mangues/search-db/image/WX20181124-220832@2x.png)
+![image](https://github.com/mangues/search-db/raw/master/image/WX20181124-220832@2x.png)
 
 
 ### 一、简单使用
