@@ -21,4 +21,8 @@ public class OrderSearch implements SearchBean {
     @ApiModelProperty(value = "订单时间范围 2018-12-11,2018-12-24")
     private String createDate;
 
+
+    @SearchParam(column = "name",symbol = SearchParamEnum.like,isDictColumn = true,dictColumn = "user_id",dictTable = "user")
+    private String userName;
+
 }

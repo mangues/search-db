@@ -14,4 +14,11 @@ public @interface SearchParam {
     SearchParamEnum symbol() default SearchParamEnum.equals;
     //数据库时间格式化匹配
     String dateFormat() default "";
+
+    //是否字典字段
+    boolean isDictColumn() default false;
+    //需要查询的字典表外键字段
+    String dictColumn() default "";
+    //字典表
+    String dictTable() default "";
 }

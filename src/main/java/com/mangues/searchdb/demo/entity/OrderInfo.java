@@ -1,10 +1,12 @@
 package com.mangues.searchdb.demo.entity;
 
-import java.time.LocalDateTime;
-import java.io.Serializable;
+import com.mangues.searchdb.annotion.DictParam;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -24,6 +26,7 @@ public class OrderInfo implements Serializable {
     /**
      * 用户名
      */
+    @DictParam(dictTable = "user",columns = {"name","password"},dictId="id")
     private Integer userId;
 
     /**
