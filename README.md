@@ -106,3 +106,77 @@ public enum OrderStateEnum implements Enum {
     }
 
 ```
+
+
+### 3.外键查询
+@DictSearch
+
+> 自动查询填充主表外键所对应的从表数据
+```
+ 比如 select * from order_info 结果集中的user_id 是外键，此注解可以自动完善user_id 对应的user数据
+```
+
+例子：
+
+@DictSearch开启功能，resultClass 对应返回list 或者 object 类型
+```
+@GetMapping("/list")
+@ApiOperation(value = "获取订单列表")
+@DictSearch(resultClass = OrderInfo.class)
+public Object orderList(OrderSearch orderSearch) {
+    return orderInfoService.list();
+}
+```
+
+@DictParam描述外键所需要的配置
+
+1. dictTable：从表
+2. columns: 所要显示的从表字段
+3. dictId：从表外键字段 默认id
+
+
+```
+public class OrderInfo
+    @DictParam(dictTable = "user",columns = {"name","password"},dictId="id")
+    private Integer userId;
+    ...
+}
+```
+
+结果：  自动填充的 userIdDictMap
+```
+[
+  {
+    "userIdDictMap": {
+      "password": "123456",
+      "name": "张三",
+      "id": 1
+    },
+    "orderNum": "ED123456",
+    "state": -1
+    "userId": 1,
+    "createAt": "2018-12-19T22:23:23"
+  },
+]
+```
+
+
+### 四、增强@SearchParam外键检索
+
+
+> 支持外键检索
+```
+ 比如 select * from order_info 只能检索user_id字段，
+ 此注解可以利用 user_id 对应的从表 user 中的字段进行检索
+```
+
+例子
+```
+ @SearchParam(column = "name",symbol = SearchParamEnum.like,
+                isDictColumn = true,dictColumn = "user_id",dictTable = "user")
+ private String userName;
+```
+增加：
+1. isDictColumn 此字段否外键
+2. dictColumn： 对应的主表外键字段
+3. dictTable:   从表
