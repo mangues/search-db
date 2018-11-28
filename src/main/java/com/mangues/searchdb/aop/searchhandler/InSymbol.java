@@ -1,7 +1,7 @@
 package com.mangues.searchdb.aop.searchhandler;
 
 import com.mangues.searchdb.annotion.SearchParamEnum;
-import com.sun.deploy.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
