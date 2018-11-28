@@ -1,6 +1,5 @@
 package com.mangues.searchdb.aop;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.toolkit.SqlRunner;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -105,12 +104,12 @@ public class DictSearchAop {
             List listObj = (List) obj;
             List resultList = new ArrayList();
             for (Object object : listObj) {
-                JSONObject jsonObject = variable2Map(object, declaredFields, keyMap);
+                Map jsonObject = variable2Map(object, declaredFields, keyMap);
                 resultList.add(jsonObject);
             }
             return resultList;
         } else {
-            JSONObject jsonObject = variable2Map(obj, declaredFields, keyMap);
+            Map jsonObject = variable2Map(obj, declaredFields, keyMap);
             return jsonObject;
         }
     }
@@ -182,10 +181,10 @@ public class DictSearchAop {
 
     //值变对象
     //变量名，变量值 -> 变量值对应的对象
-    private JSONObject variable2Map(Object obj, Field[] fieldList,Map<String,Map<Object, List<Map<String, Object>>>> variableMap) throws Exception{
+    private Map variable2Map(Object obj, Field[] fieldList,Map<String,Map<Object, List<Map<String, Object>>>> variableMap) throws Exception{
 
         String toJSONString = mapper.writeValueAsString(obj);
-        JSONObject jsonObject = mapper.readValue(toJSONString, JSONObject.class);
+        Map jsonObject = mapper.readValue(toJSONString, Map.class);
 
 
         for (Field field : fieldList) {
