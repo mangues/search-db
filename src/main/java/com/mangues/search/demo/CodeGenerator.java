@@ -1,4 +1,4 @@
-package com.mangues.search;
+package com.mangues.search.demo;
 
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;

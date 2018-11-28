@@ -1,4 +1,4 @@
-package com.mangues.search;
+package com.mangues.search.demo;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
