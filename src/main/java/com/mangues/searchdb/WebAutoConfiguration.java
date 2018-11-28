@@ -2,10 +2,14 @@ package com.mangues.searchdb;
 
 import com.mangues.searchdb.aop.DictSearchAop;
 import com.mangues.searchdb.aop.SearchDbAop;
+import com.mangues.searchdb.aop.searchhandler.BetweenAndSymbol;
+import com.mangues.searchdb.aop.searchhandler.EqualSymbol;
+import com.mangues.searchdb.aop.searchhandler.InSymbol;
+import com.mangues.searchdb.aop.searchhandler.LikeSymbol;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
-@Component
+@Configuration
 public class WebAutoConfiguration {
     @Bean
     public DictSearchAop dictSearchAop() {
@@ -15,6 +19,26 @@ public class WebAutoConfiguration {
     @Bean
     public SearchDbAop searchDbAop() {
         return new SearchDbAop();
+    }
+
+    @Bean
+    BetweenAndSymbol betweenAndSymbol(){
+        return new BetweenAndSymbol();
+    }
+
+    @Bean
+    EqualSymbol equalSymbol(){
+        return new EqualSymbol();
+    }
+
+    @Bean
+    InSymbol inSymbol(){
+        return new InSymbol();
+    }
+
+    @Bean
+    LikeSymbol likeSymbol(){
+        return new LikeSymbol();
     }
 }
 

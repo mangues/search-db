@@ -11,7 +11,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import java.lang.annotation.Annotation;
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
  * @Description 字典自动查询Aop
  */
 @Aspect
-@Component
 public class DictSearchAop {
 
     @Autowired
