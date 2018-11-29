@@ -1,3 +1,6 @@
+## 源码地址
+https://github.com/mangues/search-db
+
 ## 安装方式
 
 >具体案例可以查看 demo分支
