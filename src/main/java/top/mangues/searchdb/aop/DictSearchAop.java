@@ -1,10 +1,10 @@
-package com.mangues.searchdb.aop;
+package top.mangues.searchdb.aop;
 
 import com.baomidou.mybatisplus.extension.toolkit.SqlRunner;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mangues.searchdb.annotion.DictParam;
-import com.mangues.searchdb.annotion.DictSearch;
+import top.mangues.searchdb.annotion.DictParam;
+import top.mangues.searchdb.annotion.DictSearch;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.aspectj.lang.ProceedingJoinPoint;

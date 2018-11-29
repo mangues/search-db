@@ -1,4 +1,4 @@
-package com.mangues.searchdb.common;
+package top.mangues.searchdb.common;
 
 public interface Enum {
     String string();

@@ -1,11 +1,11 @@
-package com.mangues.searchdb;
+package top.mangues.searchdb;
 
-import com.mangues.searchdb.aop.DictSearchAop;
-import com.mangues.searchdb.aop.SearchDbAop;
-import com.mangues.searchdb.aop.searchhandler.BetweenAndSymbol;
-import com.mangues.searchdb.aop.searchhandler.EqualSymbol;
-import com.mangues.searchdb.aop.searchhandler.InSymbol;
-import com.mangues.searchdb.aop.searchhandler.LikeSymbol;
+import top.mangues.searchdb.aop.DictSearchAop;
+import top.mangues.searchdb.aop.SearchDbAop;
+import top.mangues.searchdb.aop.searchhandler.BetweenAndSymbol;
+import top.mangues.searchdb.aop.searchhandler.EqualSymbol;
+import top.mangues.searchdb.aop.searchhandler.InSymbol;
+import top.mangues.searchdb.aop.searchhandler.LikeSymbol;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

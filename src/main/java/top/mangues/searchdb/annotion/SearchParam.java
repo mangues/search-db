@@ -1,4 +1,4 @@
-package com.mangues.searchdb.annotion;
+package top.mangues.searchdb.annotion;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

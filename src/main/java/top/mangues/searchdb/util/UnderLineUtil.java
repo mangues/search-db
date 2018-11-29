@@ -1,4 +1,4 @@
-package com.mangues.searchdb.util;
+package top.mangues.searchdb.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,13 +7,6 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import java.io.IOException;
 
 public class UnderLineUtil {
-    /**
-     * 将对象的大写转换为下划线加小写，例如：userName-->user_name
-     *
-     * @param param
-     * @return
-     * @throws JsonProcessingException
-     */
     public static String toUnderlineJSONString(String param) throws JsonProcessingException {
         if (param == null || "".equals(param.trim())) {
             return "";

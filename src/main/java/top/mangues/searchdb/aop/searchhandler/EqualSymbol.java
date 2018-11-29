@@ -1,6 +1,6 @@
-package com.mangues.searchdb.aop.searchhandler;
+package top.mangues.searchdb.aop.searchhandler;
 
-import com.mangues.searchdb.annotion.SearchParamEnum;
+import top.mangues.searchdb.annotion.SearchParamEnum;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,9 +1,9 @@
-package com.mangues.searchdb.annotion;
+package top.mangues.searchdb.annotion;
 
-import com.mangues.searchdb.aop.searchhandler.BetweenAndSymbol;
-import com.mangues.searchdb.aop.searchhandler.EqualSymbol;
-import com.mangues.searchdb.aop.searchhandler.InSymbol;
-import com.mangues.searchdb.aop.searchhandler.LikeSymbol;
+import top.mangues.searchdb.aop.searchhandler.BetweenAndSymbol;
+import top.mangues.searchdb.aop.searchhandler.EqualSymbol;
+import top.mangues.searchdb.aop.searchhandler.InSymbol;
+import top.mangues.searchdb.aop.searchhandler.LikeSymbol;
 import lombok.Getter;
 
 

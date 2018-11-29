@@ -1,4 +1,4 @@
-package com.mangues.searchdb.mybatis;
+package top.mangues.searchdb.mybatis;
 
 public class SearchHelper {
     private static final ThreadLocal<String> LOCAL_PAGE = new ThreadLocal<String>();

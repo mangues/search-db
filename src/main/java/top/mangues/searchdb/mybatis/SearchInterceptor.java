@@ -1,4 +1,4 @@
-package com.mangues.searchdb.mybatis;
+package top.mangues.searchdb.mybatis;
 
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
