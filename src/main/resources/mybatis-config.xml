@@ -14,7 +14,7 @@
     <plugins>
         <!-- mybatis写出sql记录控件(拦截器) -->
         <!-- 自己写的那个拦截器 -->
-        <plugin interceptor="com.mangues.searchdb.mybatis.SearchInterceptor">
+        <plugin interceptor="top.mangues.searchdb.mybatis.SearchInterceptor">
             <!-- 方言 -->
             <property name="dialect" value="mysql"/>
         </plugin>

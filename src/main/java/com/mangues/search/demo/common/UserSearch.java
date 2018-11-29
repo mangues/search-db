@@ -1,9 +1,9 @@
 package com.mangues.search.demo.common;
 
-import com.mangues.searchdb.annotion.SearchParam;
-import com.mangues.searchdb.annotion.SearchParamEnum;
-import com.mangues.searchdb.common.SearchBean;
 import lombok.Data;
+import top.mangues.searchdb.annotion.SearchParam;
+import top.mangues.searchdb.annotion.SearchParamEnum;
+import top.mangues.searchdb.common.SearchBean;
 
 @Data
 public class UserSearch implements SearchBean {

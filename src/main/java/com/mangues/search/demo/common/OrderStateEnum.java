@@ -1,7 +1,7 @@
 package com.mangues.search.demo.common;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.mangues.searchdb.common.Enum;
+import top.mangues.searchdb.common.Enum;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum OrderStateEnum implements Enum {

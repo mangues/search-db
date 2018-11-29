@@ -93,10 +93,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.mangues</groupId>
-            <artifactId>searchdb-core</artifactId>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/lib/searchdb-core-0.0.1-SNAPSHOT.jar</systemPath>
+            <groupId>top.mangues</groupId>
+            <artifactId>searchdb-spring-boot-starter</artifactId>
+            <version>0.0.1-RELEASE</version>
         </dependency>
     </dependencies>
 

@@ -1,9 +1,9 @@
 package com.mangues.search.demo.entity;
 
-import com.mangues.searchdb.annotion.DictParam;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import top.mangues.searchdb.annotion.DictParam;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
