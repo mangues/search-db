@@ -28,10 +28,8 @@ mybatis-config.xml
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <plugins>
-        <!-- mybatis写出sql记录控件(拦截器) -->
-        <!-- 自己写的那个拦截器 -->
+        <!-- sqldb拦截器 -->
         <plugin interceptor="com.mangues.searchdb.mybatis.SearchInterceptor">
-            <!-- 方言 -->
             <property name="dialect" value="mysql"/>
         </plugin>
 
