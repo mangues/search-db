@@ -1,3 +1,46 @@
+## 安装方式
+
+>具体案例可以查看 demo分支
+
+
+### maven
+```
+<dependency>
+  <groupId>top.mangues</groupId>
+  <artifactId>searchdb-spring-boot-starter</artifactId>
+  <version>0.0.1-RELEASE</version>
+</dependency>
+```
+
+### Gradle
+```
+compile 'top.mangues:searchdb-spring-boot-starter:0.0.1-RELEASE'
+```
+
+
+### 配置，mybatis 插件
+
+mybatis-config.xml
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <plugins>
+        <!-- mybatis写出sql记录控件(拦截器) -->
+        <!-- 自己写的那个拦截器 -->
+        <plugin interceptor="com.mangues.searchdb.mybatis.SearchInterceptor">
+            <!-- 方言 -->
+            <property name="dialect" value="mysql"/>
+        </plugin>
+
+    </plugins>
+</configuration>
+```
+
+
+
 ## 使用方法
 
 #### 以下图片随机网上截取
