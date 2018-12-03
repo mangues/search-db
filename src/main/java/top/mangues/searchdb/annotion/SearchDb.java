@@ -1,6 +1,6 @@
 package top.mangues.searchdb.annotion;
 
-import com.mangues.searchdb.common.Ignore;
+import top.mangues.searchdb.common.Ignore;
 
 import java.lang.annotation.*;
 

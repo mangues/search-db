@@ -1,4 +1,4 @@
-package com.mangues.searchdb.common;
+package top.mangues.searchdb.common;
 
 /**
  * @author mangues

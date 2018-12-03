@@ -1,23 +1,23 @@
-package com.mangues.searchdb.aop;
+package top.mangues.searchdb.aop;
 
 import com.baomidou.mybatisplus.extension.toolkit.SqlRunner;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.mangues.searchdb.annotion.SearchDb;
-import com.mangues.searchdb.annotion.SearchParam;
-import com.mangues.searchdb.annotion.SearchParamEnum;
-import com.mangues.searchdb.aop.searchhandler.SymbolFactory;
-import com.mangues.searchdb.aop.searchhandler.SymbolHandler;
-import com.mangues.searchdb.common.Enum;
-import com.mangues.searchdb.common.SearchBean;
-import com.mangues.searchdb.mybatis.SearchHelper;
-import com.mangues.searchdb.util.ClassUtil;
-import com.mangues.searchdb.util.UnderLineUtil;
+import top.mangues.searchdb.annotion.SearchParam;
+import top.mangues.searchdb.annotion.SearchParamEnum;
+import top.mangues.searchdb.aop.searchhandler.SymbolFactory;
+import top.mangues.searchdb.aop.searchhandler.SymbolHandler;
+import top.mangues.searchdb.common.Enum;
+import top.mangues.searchdb.common.SearchBean;
+import top.mangues.searchdb.mybatis.SearchHelper;
+import top.mangues.searchdb.util.UnderLineUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+import top.mangues.searchdb.annotion.SearchDb;
+import top.mangues.searchdb.util.ClassUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;

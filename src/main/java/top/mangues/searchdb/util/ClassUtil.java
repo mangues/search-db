@@ -1,4 +1,4 @@
-package com.mangues.searchdb.util;
+package top.mangues.searchdb.util;
 
 public class ClassUtil {
     public static Boolean isBasic(Class clazz) {
