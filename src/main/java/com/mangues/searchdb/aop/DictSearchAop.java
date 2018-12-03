@@ -4,7 +4,8 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlRunner;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mangues.searchdb.annotion.DictParam;
-import com.mangues.searchdb.annotion.DictSearch;
+import com.mangues.searchdb.annotion.SearchDb;
+import com.mangues.searchdb.common.Ignore;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,12 +34,16 @@ public class DictSearchAop {
     SqlSession sqlSession;
 
 
-    @Around("@annotation(dictSearch)")
-    public Object doHandle(ProceedingJoinPoint point, DictSearch dictSearch) throws Throwable {
+    @Around("@annotation(searchDb)")
+    public Object doHandle(ProceedingJoinPoint point, SearchDb searchDb) throws Throwable {
 //        Signature sig = point.getSignature();
 //        MethodSignature msig = (MethodSignature) sig;
         Object obj = point.proceed();
-        Field[] declaredFields = dictSearch.resultClass().getDeclaredFields();
+        Class aClass = searchDb.resultClass();
+        if (aClass.getName().equals(Ignore.class.getName())){
+            return obj;
+        }
+        Field[] declaredFields = aClass.getDeclaredFields();
         // {
         //   field.name : {
         //                 0: select *,* from table where,
@@ -79,7 +83,6 @@ public class DictSearchAop {
             String key = map.getKey();
             List<Object> value = map.getValue();
             if (!ObjectUtils.isEmpty(value)) {
-
                 Map<Integer, StringBuilder> runSqlContentMap = runSqlMap.get(key);
                 StringBuilder stringBuilder = runSqlContentMap.get(0);
                 if (stringBuilder != null) {
@@ -95,10 +98,6 @@ public class DictSearchAop {
                 }
             }
         }
-
-
-
-
 
         if (obj instanceof List) {
             List listObj = (List) obj;
@@ -126,13 +125,12 @@ public class DictSearchAop {
         Map<String,Map<Integer,StringBuilder>> resultMap = new HashMap<>();
         //遍历所有变量
         for (Field field : fieldList) {
-            Annotation[] annotations = field.getAnnotations();
-            for (Annotation annotation:annotations){
-                //是搜索注解
-                if (annotation instanceof DictParam) {
+            boolean annotationPresent = field.isAnnotationPresent(DictParam.class);
+            if (annotationPresent) {
+                //获取变量注解
+                    DictParam searchParam = field.getAnnotation(DictParam.class);
                     StringBuilder stringBuilder = new StringBuilder("select ");
                     //获取变量注解
-                    DictParam searchParam = (DictParam) annotation;
                     String dictId = searchParam.dictId();
                     String dictTable = searchParam.dictTable();
                     String[] columns = searchParam.columns();
@@ -143,7 +141,6 @@ public class DictSearchAop {
                     contentMap.put(1,new StringBuilder(dictId));
                     resultMap.put(field.getName(),contentMap);
                 }
-            }
         }
         return resultMap;
     }
@@ -156,10 +153,8 @@ public class DictSearchAop {
     private void field2Map(Object obj, Field[] fieldList,Map<String,List<Object>> variableMap) throws JsonProcessingException, IllegalAccessException {
         //遍历所有变量
         for (Field field : fieldList) {
-            Annotation[] annotations = field.getAnnotations();
-            for (Annotation annotation : annotations) {
-                //是搜索注解
-                if (annotation instanceof DictParam) {
+            boolean annotationPresent = field.isAnnotationPresent(DictParam.class);
+            if (annotationPresent) {
                     //设置改变属性为可访问
                     field.setAccessible(true);
                     Object object = field.get(obj);
@@ -172,9 +167,7 @@ public class DictSearchAop {
                         }
                         objectList.add(object);
                     }
-                }
             }
-
         }
     }
 
@@ -186,26 +179,23 @@ public class DictSearchAop {
         String toJSONString = mapper.writeValueAsString(obj);
         Map jsonObject = mapper.readValue(toJSONString, Map.class);
 
-
         for (Field field : fieldList) {
-            Annotation[] annotations = field.getAnnotations();
-            for (Annotation annotation : annotations) {
-                //是搜索注解
-                if (annotation instanceof DictParam) {
+            boolean annotationPresent = field.isAnnotationPresent(DictParam.class);
+            if (annotationPresent) {
+                //获取变量注解
+                DictParam searchParam = field.getAnnotation(DictParam.class);
                     //设置改变属性为可访问
-                    field.setAccessible(true);
-                    DictParam searchParam = (DictParam) annotation;
-                    String dictId = searchParam.dictId();
-                    Object object = field.get(obj);
-                    if (object != null) {
-                        String name = field.getName();
-                        Map<Object, List<Map<String, Object>>> objectListMap = variableMap.get(name);
-                        if (objectListMap!=null){
-                            List<Map<String, Object>> maps = objectListMap.get(String.valueOf(object));
-                            if (maps!=null&&maps.size()>0) {
-                                Map<String, Object> stringObjectMap = maps.get(0);
-                                jsonObject.put(name+"DictMap",stringObjectMap);
-                            }
+                field.setAccessible(true);
+                String dictId = searchParam.dictId();
+                Object object = field.get(obj);
+                if (object != null) {
+                    String name = field.getName();
+                    Map<Object, List<Map<String, Object>>> objectListMap = variableMap.get(name);
+                    if (objectListMap!=null){
+                        List<Map<String, Object>> maps = objectListMap.get(String.valueOf(object));
+                        if (maps!=null&&maps.size()>0) {
+                            Map<String, Object> stringObjectMap = maps.get(0);
+                            jsonObject.put(name+"DictMap",stringObjectMap);
                         }
                     }
                 }

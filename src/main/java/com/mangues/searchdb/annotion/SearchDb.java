@@ -1,5 +1,7 @@
 package com.mangues.searchdb.annotion;
 
+import com.mangues.searchdb.common.Ignore;
+
 import java.lang.annotation.*;
 
 /**
@@ -9,5 +11,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
 public @interface SearchDb {
-
+    Class resultClass() default Ignore.class;
 }
