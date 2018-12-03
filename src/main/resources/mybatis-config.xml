@@ -12,7 +12,7 @@
     <setting name="mapUnderscoreToCamelCase" value="true"></setting>
     </settings>
     <plugins>
-        <plugin interceptor="com.mangues.searchdb.mybatis.SearchInterceptor">
+        <plugin interceptor="top.mangues.searchdb.mybatis.SearchInterceptor">
         </plugin>
     </plugins>
 </configuration>
