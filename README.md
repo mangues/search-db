@@ -1,3 +1,52 @@
+## 源码地址
+https://github.com/mangues/search-db
+
+## 0.0.2版本:
+1. @DictSearch 删除 合并到 @SearchDb上
+2. 支持controller 参数检索注解
+
+
+## 安装方式
+
+>具体案例可以查看 demo分支
+
+
+### maven
+```
+<dependency>
+  <groupId>top.mangues</groupId>
+  <artifactId>searchdb-spring-boot-starter</artifactId>
+  <version>0.0.1-RELEASE</version>
+</dependency>
+```
+
+### Gradle
+```
+compile 'top.mangues:searchdb-spring-boot-starter:0.0.1-RELEASE'
+```
+
+
+### 配置，mybatis 插件
+
+mybatis-config.xml
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <plugins>
+        <!-- sqldb拦截器 -->
+        <plugin interceptor="com.mangues.searchdb.mybatis.SearchInterceptor">
+            <property name="dialect" value="mysql"/>
+        </plugin>
+
+    </plugins>
+</configuration>
+```
+
+
+
 ## 使用方法
 
 #### 以下图片随机网上截取
@@ -24,13 +73,14 @@ public Object orderList() {
 }
 ```
 
-2. 加上字段name检索，只需要添加注解 @SearchDb，搜索类UserSearch，UserSearch必须继承接口SearchBean
+2. 加上字段name检索，只需要添加注解 @SearchDb，搜索类UserSearch，UserSearch必须继承接口SearchBean，
+    或者参数加上注解@SearchParam(column="必须指定")
 
 ```
 @GetMapping("/list")
 @ApiOperation(value = "获取用户列表")
 @SearchDb
-public Object orderList(UserSearch userSearch) {
+public Object orderList(UserSearch userSearch,@RequestParam @SearchParam(column = "name",symbol = SearchParamEnum.like) String username) {
     return iUserService.list();
 }
 ```
@@ -44,8 +94,8 @@ public Object orderList(UserSearch userSearch) {
 ```
 @Data
 public class UserSearch implements SearchBean {
-   @SearchParam(column = "name",symbol = SearchParamEnum.like)
-   private String username;
+   @SearchParam(column = "password",symbol = SearchParamEnum.like)
+   private String password;
 }
 
 ```
@@ -109,7 +159,7 @@ public enum OrderStateEnum implements Enum {
 
 
 ### 3.外键查询
-@DictSearch
+@SearchDb
 
 > 自动查询填充主表外键所对应的从表数据
 ```
@@ -122,7 +172,7 @@ public enum OrderStateEnum implements Enum {
 ```
 @GetMapping("/list")
 @ApiOperation(value = "获取订单列表")
-@DictSearch(resultClass = OrderInfo.class)
+@SearchDb(resultClass = OrderInfo.class)
 public Object orderList(OrderSearch orderSearch) {
     return orderInfoService.list();
 }
