@@ -16,7 +16,7 @@ https://github.com/mangues/search-db
 <dependency>
   <groupId>top.mangues</groupId>
   <artifactId>searchdb-spring-boot-starter</artifactId>
-  <version>0.0.1-RELEASE</version>
+  <version>0.0.3-RELEASE</version>
 </dependency>
 ```
 
