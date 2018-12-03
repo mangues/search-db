@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class UserSearch implements SearchBean {
-    @SearchParam(column = "name",symbol = SearchParamEnum.like)
-    private String username;
+    @SearchParam(column = "password",symbol = SearchParamEnum.like)
+    private String password;
 
 }

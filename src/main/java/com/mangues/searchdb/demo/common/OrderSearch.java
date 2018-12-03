@@ -8,9 +8,9 @@ import lombok.Data;
 
 @Data
 public class OrderSearch implements SearchBean {
-    @SearchParam(column = "order_num",symbol = SearchParamEnum.equals)
-    @ApiModelProperty(value = "订单编号")
-    private String orderNum;
+//    @SearchParam(column = "order_num",symbol = SearchParamEnum.equals)
+//    @ApiModelProperty(value = "订单编号")
+//    private String orderNum;
 
     @SearchParam(column = "state",symbol = SearchParamEnum.equals)
     @ApiModelProperty(value = "订单状态")
