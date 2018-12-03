@@ -63,14 +63,19 @@ public class SearchDbAop {
         for (int i=0;i<parameters.length;i++){
             Parameter parameter = parameters[i];
             Class<?> paramClazz = parameter.getType();
-            Object obj = Arrays.stream(args).filter(ar -> paramClazz.isAssignableFrom(ar.getClass())).findFirst().get();
+            Object obj = null;
+            try {
+                obj = Arrays.stream(args).filter(ar -> paramClazz.isAssignableFrom(ar.getClass())).findFirst().get();
+            }catch (Exception e) {
+                break;
+            }
             //是搜索类
             if (obj instanceof SearchBean) {
                 Field[] fields = obj.getClass().getDeclaredFields();
                 Field[] declaredFields = obj.getClass().getSuperclass().getDeclaredFields();
                 field2String(stringBuilder, obj, fields,dictListMap);
                 field2String(stringBuilder, obj, declaredFields,dictListMap);
-             //基本类型
+                //基本类型
             }else if(ClassUtil.isBasic(parameter.getType())){
                 boolean annotationPresent = parameter.isAnnotationPresent(SearchParam.class);
                 if (annotationPresent) {
