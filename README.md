@@ -1,7 +1,7 @@
 ## 源码地址
 https://github.com/mangues/search-db
 
-## 0.0.2版本:
+## 0.0.3版本:
 1. @DictSearch 删除 合并到 @SearchDb上
 2. 支持controller 参数检索注解
 
@@ -22,7 +22,7 @@ https://github.com/mangues/search-db
 
 ### Gradle
 ```
-compile 'top.mangues:searchdb-spring-boot-starter:0.0.1-RELEASE'
+compile 'top.mangues:searchdb-spring-boot-starter:0.0.3-RELEASE'
 ```
 
 
