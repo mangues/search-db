@@ -1,13 +1,14 @@
 package top.mangues.searchdb;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import top.mangues.searchdb.aop.DictSearchAop;
 import top.mangues.searchdb.aop.SearchDbAop;
 import top.mangues.searchdb.aop.searchhandler.BetweenAndSymbol;
 import top.mangues.searchdb.aop.searchhandler.EqualSymbol;
 import top.mangues.searchdb.aop.searchhandler.InSymbol;
 import top.mangues.searchdb.aop.searchhandler.LikeSymbol;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import top.mangues.searchdb.util.DictSearchHandler;
 
 @Configuration
 public class WebAutoConfiguration {
@@ -39,6 +40,11 @@ public class WebAutoConfiguration {
     @Bean
     LikeSymbol likeSymbol(){
         return new LikeSymbol();
+    }
+
+    @Bean
+    DictSearchHandler dictSearchHandler(){
+        return new DictSearchHandler();
     }
 }
 

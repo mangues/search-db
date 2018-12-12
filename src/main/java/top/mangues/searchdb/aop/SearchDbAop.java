@@ -1,15 +1,6 @@
 package top.mangues.searchdb.aop;
 
-import com.baomidou.mybatisplus.extension.toolkit.SqlRunner;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import top.mangues.searchdb.annotion.SearchParam;
-import top.mangues.searchdb.annotion.SearchParamEnum;
-import top.mangues.searchdb.aop.searchhandler.SymbolFactory;
-import top.mangues.searchdb.aop.searchhandler.SymbolHandler;
-import top.mangues.searchdb.common.Enum;
-import top.mangues.searchdb.common.SearchBean;
-import top.mangues.searchdb.mybatis.SearchHelper;
-import top.mangues.searchdb.util.UnderLineUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
@@ -17,7 +8,16 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import top.mangues.searchdb.annotion.SearchDb;
+import top.mangues.searchdb.annotion.SearchParam;
+import top.mangues.searchdb.annotion.SearchParamEnum;
+import top.mangues.searchdb.aop.searchhandler.SymbolFactory;
+import top.mangues.searchdb.aop.searchhandler.SymbolHandler;
+import top.mangues.searchdb.common.Enum;
+import top.mangues.searchdb.common.SearchBean;
+import top.mangues.searchdb.mybatis.SearchHelper;
 import top.mangues.searchdb.util.ClassUtil;
+import top.mangues.searchdb.util.ReflectUtil;
+import top.mangues.searchdb.util.UnderLineUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
@@ -122,7 +122,7 @@ public class SearchDbAop {
             });
             removeAnd(dictSb);
             //字典表查询结果
-            List<Map<String, Object>> dictResultList = SqlRunner.db().selectList(dictSb.toString());
+            List<Map<String, Object>> dictResultList = ReflectUtil.sqlRunner(dictSb.toString());
             List<Object> collect = dictResultList.stream().map(m -> {return m.get("id")+"";}).collect(Collectors.toList());
             //没有不查询
             if (collect.size()==0){
@@ -203,21 +203,26 @@ public class SearchDbAop {
                 hashMap.put("searchParamEnum",searchParamEnum);
                 hashMap.put("dateFormat",dateFormat);
                 dictList.add(hashMap);
+
+             //非字典字段需要加入到 查询sql中
+            }else {
+
+                //如果注解没有设置column 默认使用变量的下划线name
+                if (column.equals("")) {
+                    key = UnderLineUtil.toUnderlineJSONString(name);
+                }
+                //mysql需要时间格式化
+                if (!dateFormat.equals("")) {
+                    StringBuilder str = new StringBuilder("DATE_FORMAT(");
+                    str.append(key).append(",'").append(dateFormat).append("')");
+                    key = str.toString();
+                }
+
+                SymbolHandler symbolHandler = SymbolFactory.getSymbolHandler(searchParamEnum);
+                symbolHandler.getNormalSymbol(stringBuilder,key,object,searchParamEnum);
             }
 
-            //如果注解没有设置column 默认使用变量的下划线name
-            if (column.equals("")) {
-                key = UnderLineUtil.toUnderlineJSONString(name);
-            }
-            //mysql需要时间格式化
-            if (!dateFormat.equals("")) {
-                StringBuilder str = new StringBuilder("DATE_FORMAT(");
-                str.append(key).append(",'").append(dateFormat).append("')");
-                key = str.toString();
-            }
 
-            SymbolHandler symbolHandler = SymbolFactory.getSymbolHandler(searchParamEnum);
-            symbolHandler.getNormalSymbol(stringBuilder,key,object,searchParamEnum);
         }
     }
 

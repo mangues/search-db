@@ -1,12 +1,14 @@
 package top.mangues.searchdb.mybatis;
 
-import org.apache.ibatis.executor.statement.RoutingStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.*;
+import org.apache.ibatis.reflection.MetaObject;
+import org.apache.ibatis.reflection.SystemMetaObject;
+import top.mangues.searchdb.util.ReflectUtil;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.util.Properties;
 
@@ -31,15 +33,18 @@ public class SearchInterceptor implements Interceptor {
         //这里我们简单的通过传入的是Page对象就认定它是需要进行分页操作的。
         String searchBean = SearchHelper.getSearchBean();
 
-        RoutingStatementHandler handler = (RoutingStatementHandler) invocation.getTarget();
-        //通过反射获取到当前RoutingStatementHandler对象的delegate属性
-        StatementHandler delegate = (StatementHandler) ReflectUtil.getFieldValue(handler, "delegate");
-        //获取到当前StatementHandler的 boundSql，这里不管是调用handler.getBoundSql()还是直接调用delegate.getBoundSql()结果是一样的，因为之前已经说过了
-        //RoutingStatementHandler实现的所有StatementHandler接口方法里面都是调用的delegate对应的方法。
-        BoundSql boundSql = delegate.getBoundSql();
-
-
         if (searchBean!=null && searchBean.length()>1) {
+
+            //        RoutingStatementHandler handler = (RoutingStatementHandler) realTarget(invocation.getTarget());
+//        //通过反射获取到当前RoutingStatementHandler对象的delegate属性
+//        StatementHandler delegate = (StatementHandler) ReflectUtil.getFieldValue(handler, "delegate");
+            StatementHandler delegate = (StatementHandler) realTarget(invocation.getTarget());
+
+            //获取到当前StatementHandler的 boundSql，这里不管是调用handler.getBoundSql()还是直接调用delegate.getBoundSql()结果是一样的，因为之前已经说过了
+            //RoutingStatementHandler实现的所有StatementHandler接口方法里面都是调用的delegate对应的方法。
+            BoundSql boundSql = delegate.getBoundSql();
+
+
             //对于StatementHandler其实只有两个实现类，一个是RoutingStatementHandler，另一个是抽象类BaseStatementHandler，
             //BaseStatementHandler有三个子类，分别是SimpleStatementHandler，PreparedStatementHandler和CallableStatementHandler，
             //SimpleStatementHandler是用于处理Statement的，PreparedStatementHandler是处理PreparedStatement的，而CallableStatementHandler是
@@ -61,7 +66,12 @@ public class SearchInterceptor implements Interceptor {
             //利用反射设置当前BoundSql对应的sql属性为我们建立好的分页Sql语句
             ReflectUtil.setFieldValue(boundSql, "sql", pageSql);
         }
-        return invocation.proceed();
+        try {
+            return invocation.proceed();
+        }finally {
+            SearchHelper.clearData();
+        }
+
     }
 
 
@@ -69,7 +79,7 @@ public class SearchInterceptor implements Interceptor {
         StringBuffer sqlSb = new StringBuffer(sql);
         //计算第一条记录的位置
         String s = sql.toLowerCase();
-        int where = s.lastIndexOf(" where");
+        int where = s.lastIndexOf("where");
         //不存在
         if (where == -1) {
             int group = s.lastIndexOf("group by");
@@ -108,74 +118,12 @@ public class SearchInterceptor implements Interceptor {
     }
 
 
-    private static class ReflectUtil {
-        /**
-         * 利用反射获取指定对象的指定属性
-         *
-         * @param obj       目标对象
-         * @param fieldName 目标属性
-         * @return 目标属性的值
-         */
-        public static Object getFieldValue(Object obj, String fieldName) {
-            Object result = null;
-            Field field = ReflectUtil.getField(obj, fieldName);
-            if (field != null) {
-                field.setAccessible(true);
-                try {
-                    result = field.get(obj);
-                } catch (IllegalArgumentException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-            return result;
+    public static Object realTarget(Object target) {
+        if (Proxy.isProxyClass(target.getClass())) {
+            MetaObject metaObject = SystemMetaObject.forObject(target);
+            return realTarget(metaObject.getValue("h.target"));
         }
-
-        /**
-         * 利用反射获取指定对象里面的指定属性
-         *
-         * @param obj       目标对象
-         * @param fieldName 目标属性
-         * @return 目标字段
-         */
-        private static Field getField(Object obj, String fieldName) {
-            Field field = null;
-            for (Class<?> clazz = obj.getClass(); clazz != Object.class; clazz = clazz.getSuperclass()) {
-                try {
-                    field = clazz.getDeclaredField(fieldName);
-                    break;
-                } catch (NoSuchFieldException e) {
-                    //这里不用做处理，子类没有该字段可能对应的父类有，都没有就返回null。
-                }
-            }
-            return field;
-        }
-
-        /**
-         * 利用反射设置指定对象的指定属性为指定的值
-         *
-         * @param obj        目标对象
-         * @param fieldName  目标属性
-         * @param fieldValue 目标值
-         */
-        public static void setFieldValue(Object obj, String fieldName,
-                                         String fieldValue) {
-            Field field = ReflectUtil.getField(obj, fieldName);
-            if (field != null) {
-                try {
-                    field.setAccessible(true);
-                    field.set(obj, fieldValue);
-                } catch (IllegalArgumentException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        }
+        return target;
     }
+
 }
