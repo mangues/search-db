@@ -16,13 +16,13 @@ https://github.com/mangues/search-db
 <dependency>
   <groupId>top.mangues</groupId>
   <artifactId>searchdb-spring-boot-starter</artifactId>
-  <version>0.0.3-RELEASE</version>
+  <version>0.0.4-RELEASE</version>
 </dependency>
 ```
 
 ### Gradle
 ```
-compile 'top.mangues:searchdb-spring-boot-starter:0.0.3-RELEASE'
+compile 'top.mangues:searchdb-spring-boot-starter:0.0.4-RELEASE'
 ```
 
 
