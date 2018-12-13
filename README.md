@@ -1,7 +1,11 @@
 ## 源码地址
 https://github.com/mangues/search-db
 
-## 0.0.2版本:
+## 1.0.0版本
+1. 处理一些已知bug
+2. 增加代码层对返回数据填充字典表信息的 dictSearchHandler，解决分页等封装类的返回值处理
+
+## 0.0.3版本:
 1. @DictSearch 删除 合并到 @SearchDb上
 2. 支持controller 参数检索注解
 
@@ -16,13 +20,13 @@ https://github.com/mangues/search-db
 <dependency>
   <groupId>top.mangues</groupId>
   <artifactId>searchdb-spring-boot-starter</artifactId>
-  <version>0.0.1-RELEASE</version>
+  <version>1.0.0-RELEASE</version>
 </dependency>
 ```
 
 ### Gradle
 ```
-compile 'top.mangues:searchdb-spring-boot-starter:0.0.1-RELEASE'
+compile 'top.mangues:searchdb-spring-boot-starter:1.0.0-RELEASE'
 ```
 
 
@@ -45,6 +49,15 @@ mybatis-config.xml
 </configuration>
 ```
 
+
+或者 springboot
+```
+    @Bean
+    public SearchInterceptor searchInterceptor() {
+        SearchInterceptor searchInterceptor = new SearchInterceptor();
+        return searchInterceptor;
+    }
+```
 
 
 ## 使用方法
@@ -178,6 +191,23 @@ public Object orderList(OrderSearch orderSearch) {
 }
 ```
 
+或者利用DictSearchHandler 解决分页数据返回值不是List 或者 Object类型，是其他封装类。
+
+```
+ @Autowired
+ private DictSearchHandler dictSearchHandler;
+
+@GetMapping("/list")
+@ApiOperation(value = "获取订单列表")
+public Object orderList(OrderSearch orderSearch) {
+    Page<Order> page = new PageFactory<Order>().pageFactory();
+    Page pageInfo = companyRobotService.selectPage(page, null);
+    Object wrap = dictSearchHandler.wrap(pageInfo.getRecords(), Order.class);
+    pageInfo.setRecords((List)wrap);
+    return pageInfo;
+}
+```
+
 @DictParam描述外键所需要的配置
 
 1. dictTable：从表
@@ -209,6 +239,11 @@ public class OrderInfo
   },
 ]
 ```
+
+
+
+
+
 
 
 ### 四、增强@SearchParam外键检索
